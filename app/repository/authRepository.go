@@ -5,21 +5,21 @@ import (
 	"github.com/eslami200117/clientCli/database"
 )
 
-type repository struct {
+type Repository struct {
 	db *database.PostgresDatabase
 }
 
 
-func NewRepo(db *database.PostgresDatabase) *repository{
-	return &repository{
+func NewRepo(db *database.PostgresDatabase) *Repository{
+	return &Repository{
 		db: db,
 	}
 }
 
 
-func (pr repository) InsertAuth(username string, token string) {
+func (pr Repository) InsertAuth(username string, token string) {
 	var auth entities.AuthEntity
-	pr.db.GetDb().First(&auth, "username= ?", username)
+	pr.db.GetDb().Find(&auth, "username= ?", username)
 	if auth.Username == username {
 		auth.AuthToken = token
 		pr.db.GetDb().Save(&auth)
