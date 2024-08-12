@@ -1,32 +1,37 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
 
+	"github.com/eslami200117/clientCli/handler"
 	"github.com/spf13/cobra"
+)
+
+var (
+	username string
+	password string
 )
 
 // loginCmd represents the login command
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "login with username and password",
+	Long: `login with username and password eg.
+	clientCli login -u admin -p password`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("login called")
+		handler.LoginHandler(username, password)
+
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
+	loginCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username for login")
+	loginCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "password for login")
+	loginCmd.MarkPersistentFlagRequired("username")
+	loginCmd.MarkPersistentFlagRequired("password")
 
 	// Here you will define your flags and configuration settings.
 
