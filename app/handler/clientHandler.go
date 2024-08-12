@@ -7,6 +7,10 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/eslami200117/clientCli/app/repository"
+	"github.com/eslami200117/clientCli/config"
+	"github.com/eslami200117/clientCli/database"
 )
 
 type auth struct {
@@ -49,7 +53,10 @@ func LoginHandler(username string, password string) {
 	if err != nil {
 		fmt.Println("error in unmarshal", err)
 	}
-	
+	config := config.GetConfig()
+	db := database.NewPostgresDatabase(config)
+	repo := repository.NewRepo(db)
 
+	repo.InsertAuth(username, token.Token)
 
 }
