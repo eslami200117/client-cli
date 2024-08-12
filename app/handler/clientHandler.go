@@ -39,24 +39,27 @@ func LoginHandler(username string, password string) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("client: status code: %d\n", res.StatusCode)
-
 	resBody, err := io.ReadAll(res.Body)
 	if err != nil {
 		fmt.Printf("client: could not read response body: %s\n", err)
-		os.Exit(1)
+		return
 	}
 
 	var token auth
-
 	err = json.Unmarshal(resBody, &token)
 	if err != nil {
 		fmt.Println("error in unmarshal", err)
+	}
+	if token.Token == ""{
+		fmt.Println("error: Unauthorized")
+		return
 	}
 	config := config.GetConfig()
 	db := database.NewPostgresDatabase(config)
 	repo := repository.NewRepo(db)
 
+
 	repo.InsertAuth(username, token.Token)
 
 }
+
