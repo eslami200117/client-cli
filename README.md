@@ -1,0 +1,1 @@
+cli for client of a real-time app with golang and cobra
