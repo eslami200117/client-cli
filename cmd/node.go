@@ -4,9 +4,10 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/eslami200117/clientCli/app/handler"
+
 )
 
 // nodeCmd represents the node command
@@ -20,13 +21,13 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("node called")
+		handler.NodeHandler(username)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(nodeCmd)
-
+	loginCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username for get node")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
