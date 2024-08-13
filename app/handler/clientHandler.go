@@ -64,7 +64,7 @@ func LoginHandler(username string, password string) {
 }
 
 
-func NodeHandler(username string) {
+func ListHandler(username string) {
 	jsonData, err := json.Marshal(username)
 	bodyReader := bytes.NewReader(jsonData)
 	if err != nil {
@@ -107,5 +107,10 @@ func NodeHandler(username string) {
 	}
 	fmt.Println(value)
 
+	
+}
+
+
+func NodeHandler(username string) {
 	
 }
