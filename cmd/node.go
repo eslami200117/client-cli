@@ -27,7 +27,7 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(nodeCmd)
-	loginCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username for get node")
+	nodeCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username for get node")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
