@@ -108,7 +108,7 @@ func ListHandler(username string) {
 }
 
 
-func NodeHandler(username string) {
+func NodeHandler(username string, nodename string) {
 	jsonData, err := json.Marshal(username)
 	bodyReader := bytes.NewReader(jsonData)
 	if err != nil {
@@ -116,7 +116,7 @@ func NodeHandler(username string) {
 		return
 	}
 	token := getTokenByUser(username)
-	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/node", bodyReader)
+	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/node?node="+nodename, bodyReader)
 	if err != nil {
 		fmt.Println("Failed to create request", err)
 		return
@@ -136,7 +136,10 @@ func NodeHandler(username string) {
 			fmt.Println("client: could not read response body:", err)
 			return
 		}
-		var value model.Weather
+		value := struct {
+			Data model.Weather
+		}{}
+		
 		err = json.Unmarshal(resBody, &value)
 		if err != nil{
 			fmt.Println("line 103 error in unmarshal", err)
