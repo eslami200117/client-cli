@@ -10,6 +10,9 @@ import (
 
 )
 
+var (
+	nodename string
+)
 // nodeCmd represents the node command
 var nodeCmd = &cobra.Command{
 	Use:   "node",
@@ -21,13 +24,16 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		handler.NodeHandler(username)
+		handler.NodeHandler(username, nodename)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(nodeCmd)
 	nodeCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username for get node")
+	nodeCmd.PersistentFlags().StringVarP(&nodename, "nodename", "n", "", "nodename for get node")
+	nodeCmd.MarkPersistentFlagRequired("username")
+	nodeCmd.MarkPersistentFlagRequired("nodename")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
