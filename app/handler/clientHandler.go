@@ -16,7 +16,7 @@ type auth struct {
 	Token string
 }
 
-var requestURL string = "http://localhost:5000/loginuser"
+var requestURL string = "http://localhost:5000"
 
 
 func LoginHandler(username string, password string) {
@@ -28,7 +28,7 @@ func LoginHandler(username string, password string) {
 		fmt.Printf("Failed to marshal login data: %v\n", err)
 		return
 	}
-	req, err := http.NewRequest(http.MethodPost, requestURL, bodyReader)
+	req, err := http.NewRequest(http.MethodPost, requestURL+"/loginuser", bodyReader)
 	if err != nil {
 		fmt.Println("Failed to create request", err)
 		return
@@ -72,7 +72,7 @@ func NodeHandler(username string) {
 		return
 	}
 
-	req, err := http.NewRequest(http.MethodPost, requestURL, bodyReader)
+	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/list", bodyReader)
 	if err != nil {
 		fmt.Println("Failed to create request", err)
 		return
@@ -97,7 +97,15 @@ func NodeHandler(username string) {
 		fmt.Println("client: could not read response body:", err)
 		return
 	}
+	value := struct {
+		Nodes map[string]bool
+	}{}
 
-	fmt.Println(resBody)
+	err = json.Unmarshal(resBody, &value)
+	if err != nil{
+		fmt.Println("line 103 error in unmarshal", err)
+	}
+	fmt.Println(value)
+
 	
 }
