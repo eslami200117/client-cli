@@ -4,15 +4,14 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-
-	"github.com/spf13/cobra"
 	"github.com/eslami200117/clientCli/app/handler"
-
+	"github.com/spf13/cobra"
 )
 
 var (
 	nodename string
 )
+
 // nodeCmd represents the node command
 var nodeCmd = &cobra.Command{
 	Use:   "node",

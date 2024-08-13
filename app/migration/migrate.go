@@ -6,7 +6,7 @@ import (
 	"github.com/eslami200117/clientCli/database"
 )
 
-func main()	{
+func main() {
 	conf := config.GetConfig()
 	db := database.NewPostgresDatabase(conf)
 	authMigrate(db)

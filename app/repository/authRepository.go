@@ -9,13 +9,11 @@ type Repository struct {
 	db *database.PostgresDatabase
 }
 
-
-func NewRepo(db *database.PostgresDatabase) *Repository{
+func NewRepo(db *database.PostgresDatabase) *Repository {
 	return &Repository{
 		db: db,
 	}
 }
-
 
 func (pr Repository) InsertAuth(username string, token string) {
 	var auth entities.AuthEntity
@@ -26,7 +24,7 @@ func (pr Repository) InsertAuth(username string, token string) {
 	} else {
 		pr.db.GetDb().Create(
 			&entities.AuthEntity{
-				Username: username,
+				Username:  username,
 				AuthToken: token,
 			},
 		)
@@ -36,7 +34,7 @@ func (pr Repository) InsertAuth(username string, token string) {
 func (pr Repository) GetToken(username string) string {
 	var auth entities.AuthEntity
 	pr.db.GetDb().Find(&auth, "username= ?", username)
-	if auth.Username != ""{
+	if auth.Username != "" {
 		return auth.AuthToken
 	}
 	return ""

@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/eslami200117/clientCli/app/models"
 	"github.com/eslami200117/clientCli/app/repository"
 	"github.com/eslami200117/clientCli/config"
 	"github.com/eslami200117/clientCli/database"
-	"github.com/eslami200117/clientCli/app/models"
 )
 
 type auth struct {
@@ -20,7 +20,6 @@ type auth struct {
 
 const requestURL = "http://localhost:5000"
 const receiveTime = time.Second
-
 
 func LoginHandler(username string, password string) {
 
@@ -55,7 +54,7 @@ func LoginHandler(username string, password string) {
 		fmt.Println("error in unmarshal", err)
 		return
 	}
-	if token.Token == ""{
+	if token.Token == "" {
 		fmt.Println("error: Unauthorized")
 		return
 	}
@@ -65,7 +64,6 @@ func LoginHandler(username string, password string) {
 	repo.InsertAuth(username, token.Token)
 
 }
-
 
 func ListHandler(username string) {
 	jsonData, err := json.Marshal(username)
@@ -99,14 +97,12 @@ func ListHandler(username string) {
 	}{}
 
 	err = json.Unmarshal(resBody, &value)
-	if err != nil{
+	if err != nil {
 		fmt.Println("line 103 error in unmarshal", err)
 	}
 	fmt.Println(value)
 
-	
 }
-
 
 func NodeHandler(username string, nodename string) {
 	jsonData, err := json.Marshal(username)
@@ -139,9 +135,9 @@ func NodeHandler(username string, nodename string) {
 		value := struct {
 			Data model.Weather
 		}{}
-		
+
 		err = json.Unmarshal(resBody, &value)
-		if err != nil{
+		if err != nil {
 			fmt.Println("line 103 error in unmarshal", err)
 		}
 		fmt.Println(value)
@@ -155,5 +151,5 @@ func getTokenByUser(username string) string {
 	repo := repository.NewRepo(db)
 	var token string = repo.GetToken(username)
 	return token
-	
+
 }
