@@ -82,6 +82,10 @@ func ListHandler(username string) {
 	req.Header.Add("Authorization", "Bearer "+token)
 
 	res, err := http.DefaultClient.Do(req)
+	if res.StatusCode != http.StatusOK{
+		fmt.Println(res.Status)
+		return
+	}
 	if err != nil {
 		fmt.Println("client: error making http request:", err)
 		return
@@ -124,6 +128,10 @@ func NodeHandler(username string, nodename string) {
 		res, err := http.DefaultClient.Do(req)
 		if err != nil {
 			fmt.Println("client: error making http request:", err)
+			return
+		}
+		if res.StatusCode != http.StatusOK{
+			fmt.Println(res.Status)
 			return
 		}
 
