@@ -32,3 +32,12 @@ func (pr Repository) InsertAuth(username string, token string) {
 		)
 	}
 }
+
+func (pr Repository) GetToken(username string) string {
+	var auth entities.AuthEntity
+	pr.db.GetDb().Find(&auth, "username= ?", username)
+	if auth.Username != ""{
+		return auth.AuthToken
+	}
+	return ""
+}
