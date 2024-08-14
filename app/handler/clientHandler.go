@@ -187,8 +187,7 @@ func AddUser(username string, addUser string, password string) {
 		fmt.Printf("Failed to marshal login data: %v\n", err)
 		return
 	}
-
-	req, err := http.NewRequest(http.MethodPost, requestURL+"/addUser", bodyReader)
+	req, err := http.NewRequest(http.MethodPost, requestURL+"/admin/addUser", bodyReader)
 	if err != nil {
 		fmt.Println("Failed to create request", err)
 		return
