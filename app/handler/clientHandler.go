@@ -209,3 +209,33 @@ func AddUser(username string, addUser string, password string) {
 	}
 
 }
+
+func AddSource(username string, addOSource string, password string) {
+	loginData := map[string]string{"username": username, "addOSource": addOSource, "password": password}
+	jsonData, err := json.Marshal(loginData)
+	bodyReader := bytes.NewReader(jsonData)
+	if err != nil {
+		fmt.Printf("Failed to marshal login data: %v\n", err)
+		return
+	}
+	req, err := http.NewRequest(http.MethodPost, requestURL+"/admin/addSource", bodyReader)
+	if err != nil {
+		fmt.Println("Failed to create request", err)
+		return
+	}
+
+
+	token := getTokenByUser(username)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Printf("client: error making http request: %s\n", err)
+		return
+	}
+	if res.StatusCode != http.StatusOK {
+		fmt.Println(res.Status)
+		return
+	}
+}
