@@ -28,7 +28,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(addUserCmd)
-	addUserCmd.AddCommand(loginCmd)
 	addUserCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username for login")
 	addUserCmd.PersistentFlags().StringVarP(&addedUser, "addedUser", "a", "", "name  for user")
 	addUserCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "password for login")
