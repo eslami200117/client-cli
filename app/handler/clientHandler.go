@@ -204,14 +204,20 @@ func AddUser(username string, addUser string, password string) {
 		return
 	}
 	if res.StatusCode != http.StatusOK {
-		fmt.Println(res.Status)
+		resBody, err := io.ReadAll(res.Body)
+		if err != nil {
+			fmt.Println("client: could not read response body:", err)
+			return
+		}
+		
+		fmt.Println(string(resBody))
 		return
 	}
 
 }
 
 func AddSource(username string, addOSource string, password string) {
-	loginData := map[string]string{"username": username, "addOSource": addOSource, "password": password}
+	loginData := map[string]string{"username": username, "addSource": addOSource, "password": password}
 	jsonData, err := json.Marshal(loginData)
 	bodyReader := bytes.NewReader(jsonData)
 	if err != nil {
@@ -224,7 +230,6 @@ func AddSource(username string, addOSource string, password string) {
 		return
 	}
 
-
 	token := getTokenByUser(username)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
@@ -235,7 +240,13 @@ func AddSource(username string, addOSource string, password string) {
 		return
 	}
 	if res.StatusCode != http.StatusOK {
-		fmt.Println(res.Status)
+		resBody, err := io.ReadAll(res.Body)
+		if err != nil {
+			fmt.Println("client: could not read response body:", err)
+			return
+		}
+		
+		fmt.Println(string(resBody))
 		return
 	}
 }
