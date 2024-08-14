@@ -67,14 +67,8 @@ func LoginHandler(username string, password string) {
 }
 
 func ListHandler(username string) {
-	jsonData, err := json.Marshal(username)
-	bodyReader := bytes.NewReader(jsonData)
-	if err != nil {
-		fmt.Println("Failed to create marshal username", err)
-		return
-	}
 	token := getTokenByUser(username)
-	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/list", bodyReader)
+	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/list", nil)
 	if err != nil {
 		fmt.Println("Failed to create request", err)
 		return
@@ -114,14 +108,8 @@ func ListHandler(username string) {
 }
 
 func NodeHandler(username string, nodename string) {
-	jsonData, err := json.Marshal(username)
-	bodyReader := bytes.NewReader(jsonData)
-	if err != nil {
-		fmt.Println("Failed to create marshal username", err)
-		return
-	}
 	token := getTokenByUser(username)
-	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/node?node="+nodename, bodyReader)
+	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/node?node="+nodename, nil)
 	if err != nil {
 		fmt.Println("Failed to create request", err)
 		return
@@ -172,4 +160,53 @@ func LogoutHandler(username string) {
 	db := database.NewPostgresDatabase(config)
 	repo := repository.NewRepo(db)
 	repo.Logout(username)
+	token := getTokenByUser(username)
+	req, err := http.NewRequest(http.MethodGet, requestURL+"/test/logout", nil)
+	if err != nil {
+		fmt.Println("Failed to create request", err)
+		return
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println("client: error making http request:", err)
+		return
+	}
+	if res.StatusCode != http.StatusOK {
+		fmt.Println(res.Status)
+		return
+	}
+}
+
+func AddUser(username string, addUser string, password string) {
+	loginData := map[string]string{"username": username, "addUser": addUser, "password": password}
+	jsonData, err := json.Marshal(loginData)
+	bodyReader := bytes.NewReader(jsonData)
+	if err != nil {
+		fmt.Printf("Failed to marshal login data: %v\n", err)
+		return
+	}
+
+	req, err := http.NewRequest(http.MethodPost, requestURL+"/addUser", bodyReader)
+	if err != nil {
+		fmt.Println("Failed to create request", err)
+		return
+	}
+
+
+	token := getTokenByUser(username)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Printf("client: error making http request: %s\n", err)
+		return
+	}
+	if res.StatusCode != http.StatusOK {
+		fmt.Println(res.Status)
+		return
+	}
+
 }
