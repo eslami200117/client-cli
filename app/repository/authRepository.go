@@ -15,7 +15,7 @@ func NewRepo(db *database.PostgresDatabase) *Repository {
 	}
 }
 
-func (pr Repository) InsertAuth(username string, token string) {
+func (pr *Repository) InsertAuth(username string, token string) {
 	var auth entities.AuthEntity
 	pr.db.GetDb().Find(&auth, "username= ?", username)
 	if auth.Username == username {
@@ -31,11 +31,19 @@ func (pr Repository) InsertAuth(username string, token string) {
 	}
 }
 
-func (pr Repository) GetToken(username string) string {
+func (pr *Repository) GetToken(username string) string {
 	var auth entities.AuthEntity
 	pr.db.GetDb().Find(&auth, "username= ?", username)
 	if auth.Username != "" {
 		return auth.AuthToken
 	}
 	return ""
+}
+
+func (pr *Repository) Logout(username string) {
+	var auth entities.AuthEntity
+	pr.db.GetDb().Find(&auth, "username= ?", username)
+	if auth.Username != "" {
+		auth.AuthToken = ""
+	}
 }

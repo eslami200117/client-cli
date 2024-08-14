@@ -83,7 +83,7 @@ func ListHandler(username string) {
 	req.Header.Add("Authorization", "Bearer "+token)
 
 	res, err := http.DefaultClient.Do(req)
-	if res.StatusCode != http.StatusOK{
+	if res.StatusCode != http.StatusOK {
 		fmt.Println(res.Status)
 		return
 	}
@@ -106,7 +106,7 @@ func ListHandler(username string) {
 		fmt.Println("line 103 error in unmarshal", err)
 	}
 	for k, v := range value.Nodes {
-		if v{
+		if v {
 			fmt.Println(k)
 		}
 	}
@@ -135,7 +135,7 @@ func NodeHandler(username string, nodename string) {
 			fmt.Println("client: error making http request:", err)
 			return
 		}
-		if res.StatusCode != http.StatusOK{
+		if res.StatusCode != http.StatusOK {
 			fmt.Println(res.Status)
 			return
 		}
@@ -165,4 +165,11 @@ func getTokenByUser(username string) string {
 	var token string = repo.GetToken(username)
 	return token
 
+}
+
+func LogoutHandler(username string) {
+	config := config.GetConfig()
+	db := database.NewPostgresDatabase(config)
+	repo := repository.NewRepo(db)
+	repo.Logout(username)
 }
