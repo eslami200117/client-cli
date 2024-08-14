@@ -62,6 +62,7 @@ func LoginHandler(username string, password string) {
 	db := database.NewPostgresDatabase(config)
 	repo := repository.NewRepo(db)
 	repo.InsertAuth(username, token.Token)
+	fmt.Println("you are login successfuly!")
 
 }
 
@@ -104,7 +105,11 @@ func ListHandler(username string) {
 	if err != nil {
 		fmt.Println("line 103 error in unmarshal", err)
 	}
-	fmt.Println(value)
+	for k, v := range value.Nodes {
+		if v{
+			fmt.Println(k)
+		}
+	}
 
 }
 
